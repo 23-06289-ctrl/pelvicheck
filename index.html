@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PelviCheck | Web-Based Pelvic Posture Screening & Referral Platform</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+    
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #174c5a;
+            --primary-hover: #293943;
+            --primary-light: #eaf5f3;
+            --secondary: #72b7b0;
+            --secondary-light: #f0fdfa;
+            --dark: #0f172a;
+            --slate: #475569;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --radius-lg: 20px;
+            
+            --apt-color: #e11d48;
+            --apt-bg: #ffe4e6;
+            --neutral-color: #16a34a;
+            --neutral-bg: #dcfce7;
+            --ppt-color: #d97706;
+            --ppt-bg: #fef3c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* Header / Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 800;
+            font-size: 1.35rem;
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-img {
+            width: 120px;
+            height: 64px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--slate);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Hero / Introduction */
+        .hero {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2.5rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .hero p {
+            color: var(--slate);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .disclaimer-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            color: #92400e;
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        /* Assessment Workspace */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 1.75rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        /* Canvas Interactive Area */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            background: #0f172a;
+            border-radius: var(--radius);
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #assessmentCanvas {
+            max-width: 100%;
+            max-height: 550px;
+            display: block;
+            cursor: crosshair;
+        }
+
+        .canvas-overlay-msg {
+            position: absolute;
+            color: white;
+            text-align: center;
+            pointer-events: none;
+            padding: 2rem;
+        }
+
+        .canvas-overlay-msg i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        /* Controls Toolbar */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .btn {
+            padding: 0.65rem 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--slate);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--light-bg);
+            color: var(--dark);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-light);
+            color: var(--secondary);
+            border-color: #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background: #e6fffa;
+        }
+
+        /* Instruction Steps */
+        .steps-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .steps-list li {
+            position: relative;
+            padding-left: 2.75rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.92rem;
+            color: var(--slate);
+        }
+
+        .steps-list li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* Results Display Card */
+        .result-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .result-badge.apt {
+            background: var(--apt-bg);
+            color: var(--apt-color);
+        }
+
+        .result-badge.neutral {
+            background: var(--neutral-bg);
+            color: var(--neutral-color);
+        }
+
+        .result-badge.ppt {
+            background: var(--ppt-bg);
+            color: var(--ppt-color);
+        }
+
+        .angle-metric {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .angle-metric .value {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--dark);
+        }
+
+        .angle-metric .label {
+            font-size: 0.85rem;
+            color: var(--slate);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.35rem;
+        }
+
+        /* Educational Tabs & Section */
+        .section-heading {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-heading h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-heading p {
+            color: var(--slate);
+            font-size: 1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .info-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card ul {
+            padding-left: 1.25rem;
+            color: var(--slate);
+            font-size: 0.9rem;
+        }
+
+        .info-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Referral Directory */
+        .referral-section {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            padding: 0.65rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            flex: 1;
+            min-width: 220px;
+            font-size: 0.9rem;
+        }
+
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .provider-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            background: var(--light-bg);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .provider-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            background: var(--white);
+        }
+
+        .provider-type {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .provider-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .provider-address {
+            font-size: 0.85rem;
+            color: var(--slate);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 100%;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--slate);
+        }
+
+        /* History Table */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.88rem;
+        }
+
+        .history-table th, .history-table td {
+            padding: 0.65rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-table th {
+            font-weight: 700;
+            color: var(--slate);
+            background: var(--light-bg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="./pelvicheck-logo.png" alt="PelviCheck Logo" class="logo-img">\
+            </a>
+            <ul class="nav-links">
+                <li><a href="#assessment"><i class="fa-solid fa-crosshairs"></i> Screening</a></li>
+                <li><a href="#education"><i class="fa-solid fa-book-medical"></i> Education</a></li>
+                <li><a href="#referral"><i class="fa-solid fa-user-doctor"></i> Healthcare Referral</a></li>
+            </ul>
+            <a href="#assessment" class="cta-btn"><i class="fa-solid fa-camera"></i> Start Screening</a>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div>
+                <span class="hero-tag"><i class="fa-solid fa-shield-halved"></i> Evidence-Based Screening</span>
+                <h1>Pelvic Posture Screening & Care Referral Platform</h1>
+                <p>An accessible tool designed to estimate pelvic tilt alignment from side-view photographs, provide ergonomic recommendations, and connect users with qualified healthcare professionals.</p>
+                <div class="disclaimer-box">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.2rem;"></i>
+                    <div>
+                        <strong>Screening Aid Notice:</strong> PelviCheck is an educational and preliminary screening tool. It does not provide medical diagnoses or replace clinical evaluations by physical therapists or physicians.
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="background: linear-gradient(135deg, var(--primary-light), var(--secondary-light)); padding: 2rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border);">
+                    <i class="fa-solid fa-notes-medical" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h3 style="margin-bottom: 0.5rem;">Did You Know?</h3>
+                    <p style="font-size: 0.9rem; color: var(--slate); margin-bottom: 0;">
+                        Asymptomatic pelvic tilt variations are common: research indicates <strong>85% of males</strong> and <strong>75% of females</strong> exhibit anterior pelvic tilt naturally without symptoms.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Assessment Workspace -->
+        <div id="assessment" class="workspace-grid">
+            
+            <!-- Interactive Assessment Canvas Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-sliders"></i> Digital Pelvic Landmark Assessment
+                    </div>
+                    <span id="landmarkStatus" style="font-size: 0.85rem; font-weight: 600; color: var(--slate);">Select Image</span>
+                </div>
+
+                <div class="canvas-container" id="canvasWrapper">
+                    <canvas id="assessmentCanvas"></canvas>
+                    <div class="canvas-overlay-msg" id="placeholderMsg">
+                        <i class="fa-solid fa-image"></i>
+                        <h3>Upload or Capture Side-View Photo</h3>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #94a3b8;">Stand in habitual standing posture. Side view must clearly show the hip and pelvis area.</p>
+                    </div>
+                </div>
+            
+            <!-- Photo Preparation Instructions -->
+            <div style="background: var(--primary-light); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+                <h3 style="font-size: 1rem; margin-bottom: 0.75rem; color: var(--primary);">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    Before Starting the Assessment
+                </h3>
+
+                <ol style="padding-left: 1.25rem; color: var(--slate); font-size: 0.88rem;">
+                    <li style="margin-bottom: 0.5rem;">
+                        <strong>Posture:</strong>
+                        Stand in your usual, comfortable standing posture.
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <strong>Body Position:</strong>
+                        Ensure your body is properly positioned within the camera view.
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <strong>Clothing:</strong>
+                        Wear clothing that allows the relevant hip and pelvic landmarks to be identified.
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <strong>Camera Setup:</strong>
+                        Follow the recommended camera placement and distance.
+                    </li>
+                    <li style="margin-bottom: 0.5rem;">
+                        <strong>Lighting and Image Quality:</strong>
+                        Use adequate lighting and ensure the side-view photo is clear and unobstructed.
+                    </li>
+                    <li>
+                        <strong>Privacy and Limitations:</strong>
+                        Some landmarks may not be visible. Do not rely on results if image quality or landmark visibility is insufficient. PelviCheck is not a diagnostic tool.
+                    </li>
+                </ol>
+            </div>
